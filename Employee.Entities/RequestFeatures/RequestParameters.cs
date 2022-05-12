@@ -8,7 +8,7 @@ namespace Employees.Entities.RequestFeatures
 {
     public abstract class RequestParameters
     {
-        const int maxPageSize = 10;
+        const int maxPageSize = 3;
         public int PageNumber { get; set; } = 3;
         private int _pageSize = 2;
         public int PageSize

@@ -25,9 +25,9 @@ namespace Employees.WebApi.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> GetEmployeeSearch([FromQuery] EmployeesParameters employeesParameters)
+        public async Task<IActionResult> GetEmployeeSearch([FromQuery] EmployeesParameters employeesParameters, string choice)
         {
-            var employeeSearch = await _repository.SearchEmployee.GetPaginationCustomerAsync(employeesParameters, trackChanges: false);
+            var employeeSearch = await _repository.SearchEmployee.GetPaginationCustomerAsync(employeesParameters, trackChanges: false,choice);
             var employeeDto = _mapper.Map<IEnumerable<SearchEmployeesDto>>(employeeSearch);
             return Ok(employeeDto);
         }

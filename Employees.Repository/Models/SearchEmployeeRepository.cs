@@ -36,20 +36,166 @@ namespace Employees.Repository.Models
         =>
             await FindByCondition(c => c.NationalIdnumber.Equals(id), trackChanges).SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<SearchEmployee>> GetPaginationCustomerAsync(EmployeesParameters employeesParameters, bool trackChanges)
+        public async Task<IEnumerable<SearchEmployee>> GetPaginationCustomerAsync(EmployeesParameters employeesParameters, bool trackChanges, string choice/*,string order*/)
         {
             if (string.IsNullOrWhiteSpace(employeesParameters.SearchEmployees))
             {
-                return await FindAll(trackChanges).ToListAsync();
+                return await FindAll(trackChanges).OrderBy(c => c.NationalIdnumber)
+                    .Skip((employeesParameters.PageNumber - 1) * employeesParameters.PageSize)
+                    .Take(employeesParameters.PageSize)
+                    .ToListAsync();
             }
             else
             {
                 var lowerCaseSearch = employeesParameters.SearchEmployees.Trim().ToLower();
-                return await FindAll(trackChanges)
-                    .Where(c => c.FirstName.ToLower().Contains(lowerCaseSearch))
-                    //.Include(c => c.Orders)
-                    .OrderBy(c => c.FirstName)
-                    .ToListAsync();
+
+                /*     return await FindAll(trackChanges)
+                     .Where(c => c.FirstName.ToLower().Contains(lowerCaseSearch))
+                     //.Include(c => c.Orders)
+                     .OrderBy(c => c.FirstName)
+                     .ToListAsync();*/
+                /* if (order == "ascending")
+                 {*/
+                if (choice != null) { 
+                    switch (choice)
+                    {
+                        case "jobTitle":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.JobTitle.ToLower().Contains(lowerCaseSearch))
+                         //.Include(c => c.Orders)
+                         .Skip((employeesParameters.PageNumber - 1) * employeesParameters.PageSize)
+                    .Take(employeesParameters.PageSize)
+                         .OrderBy(c => c.JobTitle)
+                         .ToListAsync();
+
+                        case "birthDate":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.BirthDate.Equals(lowerCaseSearch))
+                         //.OrderBy(c => c.BirthDate.())
+                         .Skip((employeesParameters.PageNumber - 1) * employeesParameters.PageSize)
+                    .Take(employeesParameters.PageSize)
+                         .ToListAsync();
+
+                        case "hireDate":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.HireDate.Equals(lowerCaseSearch))
+                       //  .OrderBy(c => c.FirstName)
+                       .Skip((employeesParameters.PageNumber - 1) * employeesParameters.PageSize)
+                    .Take(employeesParameters.PageSize)
+                         .ToListAsync();
+
+                        case "Department":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.Name.ToLower().Contains(lowerCaseSearch))
+                         .OrderBy(c => c.Name)
+                         .Skip((employeesParameters.PageNumber - 1) * employeesParameters.PageSize)
+                    .Take(employeesParameters.PageSize)
+                         .ToListAsync();
+
+                        case "firstName":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.FirstName.ToLower().Contains(lowerCaseSearch))
+                         .OrderBy(c => c.FirstName)
+                         .Skip((employeesParameters.PageNumber - 1) * employeesParameters.PageSize)
+                    .Take(employeesParameters.PageSize)
+                         .ToListAsync();
+
+                        case "lastName":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.LastName.ToLower().Contains(lowerCaseSearch))
+                         .OrderBy(c => c.LastName)
+                         .Skip((employeesParameters.PageNumber - 1) * employeesParameters.PageSize)
+                    .Take(employeesParameters.PageSize)
+                         .ToListAsync();
+
+                        case "nationalId":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.NationalIdnumber.ToLower().Contains(lowerCaseSearch))
+                         .OrderBy(c => c.NationalIdnumber)
+                         .Skip((employeesParameters.PageNumber - 1) * employeesParameters.PageSize)
+                    .Take(employeesParameters.PageSize)
+                         .ToListAsync();
+                    default:
+                        return await FindAll(trackChanges)
+                     .Where(c => c.NationalIdnumber.ToLower().Contains(lowerCaseSearch))
+                     .OrderBy(c => c.FirstName)
+                     .Skip((employeesParameters.PageNumber - 1) * employeesParameters.PageSize)
+                    .Take(employeesParameters.PageSize)
+                     .ToListAsync();
+                }
+                }
+                else
+                {
+                    return await FindAll(trackChanges)
+                                         .Where(c => c.NationalIdnumber.ToLower().Contains(lowerCaseSearch))
+                                         .OrderBy(c => c.FirstName)
+                                         .Skip((employeesParameters.PageNumber - 1) * employeesParameters.PageSize)
+                    .Take(employeesParameters.PageSize)
+                                         .ToListAsync();
+                }
+
+
+
+
+                /*}*/
+                /* else
+                {
+                    switch (choice)
+                    {
+                        case "jobTitle":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.JobTitle.ToLower().Contains(lowerCaseSearch))
+                         //.Include(c => c.Orders)
+                         .OrderBy(c => c.FirstName)
+                         .ToListAsync();
+
+                        case "birthDate":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.BirthDate.Equals(lowerCaseSearch))
+                         .OrderBy(c => c.FirstName)
+                         .ToListAsync();
+
+                        case "hireDate":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.HireDate.Equals(lowerCaseSearch))
+                         .OrderBy(c => c.FirstName)
+                         .ToListAsync();
+
+                        case "Department":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.Name.ToLower().Contains(lowerCaseSearch))
+                         .OrderBy(c => c.FirstName)
+                         .ToListAsync();
+
+                        case "firstName":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.FirstName.ToLower().Contains(lowerCaseSearch))
+                         .OrderBy(c => c.FirstName)
+                         .ToListAsync();
+
+                        case "lastName":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.LastName.ToLower().Contains(lowerCaseSearch))
+                         .OrderBy(c => c.FirstName)
+                         .ToListAsync();
+
+                        case "nationalId":
+                            return await FindAll(trackChanges)
+                         .Where(c => c.NationalIdnumber.ToLower().Contains(lowerCaseSearch))
+                         .OrderBy(c => c.FirstName)
+                         .ToListAsync();
+
+                    }
+                }*/
+
+
+
+
+
+
+
+
+
             }
         }
         public void UpdateEmployeeAsync(SearchEmployee employee)
