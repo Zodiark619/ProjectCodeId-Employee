@@ -10,6 +10,7 @@ namespace Employees.Contracts
     public interface IRepositoryManager
     {
         IEmployeesRepository Employee { get; }
+        IAddedEmployeeRepository EmployeeAdded { get; }
         Task SaveAsync();
     }
 }

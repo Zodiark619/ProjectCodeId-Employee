@@ -14,6 +14,12 @@ namespace Employees.Repository
     {
         private readonly AdventureWorks2019Context _repositoryContext;
         private IEmployeesRepository _employeesRepository;
+<<<<<<< Updated upstream
+=======
+        private ISearchEmployeeRepository _searchemployeeRepository;
+        private IAddedEmployeeRepository _addedEmployeeRepository;
+
+>>>>>>> Stashed changes
 
         public RepositoryManager(AdventureWorks2019Context repositoryContext)
         {
@@ -31,6 +37,18 @@ namespace Employees.Repository
                     _employeesRepository = new EmployeesRepository(_repositoryContext);
                 }
                 return _employeesRepository;
+            }
+        }
+
+        public IAddedEmployeeRepository EmployeeAdded
+        {
+            get
+            {
+                if (_addedEmployeeRepository == null)
+                {
+                    _addedEmployeeRepository = new VAdedEmployeeRepository(_repositoryContext);
+                }
+                return _addedEmployeeRepository;
             }
         }
 

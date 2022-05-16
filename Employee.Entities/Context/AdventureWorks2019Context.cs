@@ -84,6 +84,7 @@ namespace Employees.Entities.Context
         public virtual DbSet<TransactionHistory> TransactionHistories { get; set; }
         public virtual DbSet<TransactionHistoryArchive> TransactionHistoryArchives { get; set; }
         public virtual DbSet<UnitMeasure> UnitMeasures { get; set; }
+        public virtual DbSet<VAddedEmployee> VAddedEmployees { get; set; }
         public virtual DbSet<VAdditionalContactInfo> VAdditionalContactInfos { get; set; }
         public virtual DbSet<VEmployee> VEmployees { get; set; }
         public virtual DbSet<VEmployeeDepartment> VEmployeeDepartments { get; set; }
@@ -116,7 +117,7 @@ namespace Employees.Entities.Context
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=LAPTOP-LJ8HT7OG\\SQLEXPRESS01;Initial Catalog=AdventureWorks2019;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-KBK7GUF;Initial Catalog=AdventureWorks2019;Trusted_Connection=True");
             }
         }
 
@@ -3253,6 +3254,53 @@ namespace Employees.Entities.Context
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasComment("Unit of measure description.");
+            });
+
+            modelBuilder.Entity<VAddedEmployee>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vAddedEmployee", "HumanResources");
+
+                entity.Property(e => e.BirthDate).HasColumnType("date");
+
+                entity.Property(e => e.BusinessEntityId).HasColumnName("BusinessEntityID");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Gender)
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.GroupName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.JobTitle)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.MiddleName).HasMaxLength(50);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.NationalIdnumber)
+                    .IsRequired()
+                    .HasMaxLength(15)
+                    .HasColumnName("NationalIDNumber");
+
+                entity.Property(e => e.Rate).HasColumnType("money");
+
+                entity.Property(e => e.Suffix).HasMaxLength(10);
             });
 
             modelBuilder.Entity<VAdditionalContactInfo>(entity =>
