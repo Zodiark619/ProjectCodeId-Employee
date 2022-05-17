@@ -15,6 +15,9 @@ namespace Employees.Repository
         private readonly AdventureWorks2019Context _repositoryContext;
         private IEmployeesRepository _employeesRepository;
         private ISearchEmployeeRepository _searchemployeeRepository;
+        private IEmployeeDashboardRepository _employeedashboardRepository;
+        private IEmployeeDashboard1Repository _employeedashboard1Repository;
+
 
 
         public RepositoryManager(AdventureWorks2019Context repositoryContext)
@@ -47,6 +50,33 @@ namespace Employees.Repository
                 return _searchemployeeRepository;
             }
         }
+        public IEmployeeDashboardRepository EmployeeDashboard
+        {
+
+            get
+            {
+                if (_employeedashboardRepository == null)
+                {
+                    _employeedashboardRepository = new EmployeeDashboardRepository(_repositoryContext);
+                }
+                return _employeedashboardRepository;
+            }
+        }
+
+
+        public IEmployeeDashboard1Repository EmployeeDashboard1
+        {
+
+            get
+            {
+                if (_employeedashboard1Repository == null)
+                {
+                    _employeedashboard1Repository = new EmployeeDashboard1Repository(_repositoryContext);
+                }
+                return _employeedashboard1Repository;
+            }
+        }
+
 
         public async Task SaveAsync()
         =>

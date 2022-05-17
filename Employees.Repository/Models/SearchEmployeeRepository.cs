@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Employees.Repository.Models
 {
-    public class SearchEmployeeRepository : RepositoryBase<SearchEmployee>,ISearchEmployeeRepository
+    public class SearchEmployeeRepository : RepositoryBase<SearchEmployee>, ISearchEmployeeRepository
     {
         public SearchEmployeeRepository(AdventureWorks2019Context repositoryContext) : base(repositoryContext)
         {
@@ -101,6 +101,16 @@ namespace Employees.Repository.Models
                 //return await queryFinish.ToListAsync();
             }
         }  
+
+
+
+
+
+
+
+
+       
+
         public void UpdateEmployeeAsync(SearchEmployee employee)
         {
             Update(employee);

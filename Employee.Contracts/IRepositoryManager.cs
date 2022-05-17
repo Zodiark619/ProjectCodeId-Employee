@@ -9,6 +9,10 @@ namespace Employees.Contracts
 {
     public interface IRepositoryManager
     {
+        IEmployeeDashboardRepository EmployeeDashboard { get; }
+        IEmployeeDashboard1Repository EmployeeDashboard1 { get; }
+
+
         ISearchEmployeeRepository SearchEmployee { get; }
 
         IEmployeesRepository Employee { get; }
