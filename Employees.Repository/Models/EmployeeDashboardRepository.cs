@@ -78,14 +78,17 @@ namespace Employees.Repository.Models
                 {"11-15",0 },
                 {"16-20",0 },
                 {"21-45",0 },
-                {">45",0 }
+                {">45",0 },
+                {"Total",0 }
             };
-            var counter = 0;
+            var counter=0;
             var query = await FindAll(trackChanges)
                 .OrderBy(c => c.BusinessEntityId)
-                .OrderByDescending(c => c.ModifiedDate).ToListAsync();
+                .ThenByDescending(x => x.ModifiedDate)
+                .ToListAsync();
             foreach(var item in query)
             {
+               
                 if (counter !=item.BusinessEntityId)
                 {
                     //      if (item.Rate>= 6 && item.Rate < 11){
@@ -119,12 +122,15 @@ namespace Employees.Repository.Models
                         counter = item.BusinessEntityId;
 
                     }
+                    dictRateSalary["Total"]++;
                 }
-                else
-                {
-                    counter = item.BusinessEntityId;
-                    continue;
-                }
+                
+
+                /*   else
+                   {
+                       //counter = item.BusinessEntityId;
+                       continue;
+                   }*/
             }
             return dictRateSalary;
             

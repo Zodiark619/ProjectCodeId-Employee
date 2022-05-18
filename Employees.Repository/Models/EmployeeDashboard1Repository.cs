@@ -55,6 +55,7 @@ namespace Employees.Repository.Models
                 {"Facilities and Maintenance",0 },
                 {"Shipping and Receiving",0 },
                 {"Executive",0 },
+                {"Total",0 }
             };
             var counter = 0;
             var query = await FindAll(trackChanges)
@@ -145,12 +146,15 @@ namespace Employees.Repository.Models
                         dictRateSalary["Executive"]++;
                         counter = item.BusinessEntityId;
                     }
+                    dictRateSalary["Total"]++;
                 }
-                else
+                
+
+                /*else
                 {
                     counter = item.BusinessEntityId;
                     continue;
-                }
+                }*/
             }
             return dictRateSalary;
         }
