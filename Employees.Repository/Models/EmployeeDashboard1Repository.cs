@@ -37,10 +37,11 @@ namespace Employees.Repository.Models
 
         public async Task<Dictionary<string, int>> ShowEmployeeDashboard1(bool trackChanges)
         {
-            Dictionary<string, int> dictRateSalary = new Dictionary<string, int>
+           /* Dictionary<string, int> dictRateSalary = new Dictionary<string, int>
             {
+
                 {"Engineering",0 },
-                {"Tool Design",0 },              
+                {"Tool Design",0 },
                 {"Sales",0 },
                 {"Marketing",0 },
                 {"Purchasing",0 },
@@ -56,11 +57,27 @@ namespace Employees.Repository.Models
                 {"Shipping and Receiving",0 },
                 {"Executive",0 },
                 {"Total",0 }
-            };
+            };*/
+
             var counter = 0;
             var query = await FindAll(trackChanges)
                 .OrderBy(c => c.BusinessEntityId)
                 .ToListAsync();
+            List<string> meong = new List<string>();
+            foreach(var item in query)
+            {
+               
+                meong.Add(item.Department);
+            }
+            meong.Add("Total");
+            var meong1=meong.Distinct().ToList();
+            
+            Dictionary<string, int> dictRateSalary = new Dictionary<string, int>();
+            foreach (var item in meong1)
+            {
+             
+                dictRateSalary.Add(item,0);
+            }
             foreach (var item in query)
             {
                 if (counter != item.BusinessEntityId)
