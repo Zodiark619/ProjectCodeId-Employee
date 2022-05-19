@@ -5,8 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Employees.Contracts;
 using Employees.Contracts.Interface;
+using Employees.Contracts.Interface.IAddEditEmployeeRepository;
 using Employees.Entities.Context;
 using Employees.Repository.Models;
+using Employees.Repository.Models.AddEditEmployeeRepository;
 
 namespace Employees.Repository
 {
@@ -17,6 +19,10 @@ namespace Employees.Repository
         private ISearchEmployeeRepository _searchemployeeRepository;
         private IEmployeeDashboardRepository _employeedashboardRepository;
         private IEmployeeDashboard1Repository _employeedashboard1Repository;
+
+        private IAddEditEmployeeRepository _addEditEmployeeRepository;
+        private IAddEditEmployeeRepository2 _addEditEmployeeRepository2;
+
 
 
 
@@ -78,7 +84,46 @@ namespace Employees.Repository
         }
 
 
-        public async Task SaveAsync()
+
+
+
+
+
+
+
+        public IAddEditEmployeeRepository AddEditEmployeeRepository
+        {
+
+            get
+            {
+                if (_addEditEmployeeRepository == null)
+                {
+                    _addEditEmployeeRepository = new AddEditEmployeeRepository(_repositoryContext);
+                }
+                return _addEditEmployeeRepository;
+            }
+        }
+        public IAddEditEmployeeRepository2 AddEditEmployeeRepository2
+        {
+
+            get
+            {
+                if (_addEditEmployeeRepository2 == null)
+                {
+                    _addEditEmployeeRepository2 = new AddEditEmployeeRepository2(_repositoryContext);
+                }
+                return _addEditEmployeeRepository2;
+            }
+        }
+
+
+
+
+
+
+
+
+                public async Task SaveAsync()
         =>
             await _repositoryContext.SaveChangesAsync();
         

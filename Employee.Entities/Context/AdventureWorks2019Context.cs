@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Employees.Entities.Models;
+using Microsoft.EntityFrameworkCore;
+
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Employees.Entities.Models;
@@ -18,6 +21,8 @@ namespace Employees.Entities.Context
         {
         }
 
+        public virtual DbSet<AddEditEmployee2> AddEditEmployee2s { get; set; }
+        public virtual DbSet<AddEditEmployee3> AddEditEmployee3s { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<AddressType> AddressTypes { get; set; }
         public virtual DbSet<AwbuildVersion> AwbuildVersions { get; set; }
@@ -124,6 +129,77 @@ namespace Employees.Entities.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<AddEditEmployee2>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("AddEditEmployee2", "HumanResources");
+
+                entity.Property(e => e.BirthDate).HasColumnType("date");
+
+                entity.Property(e => e.BusinessEntityId).HasColumnName("BusinessEntityID");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Gender)
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.HireDate).HasColumnType("date");
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.MaritalStatus)
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.MiddleName).HasMaxLength(50);
+
+                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.NationalIdnumber)
+                    .IsRequired()
+                    .HasMaxLength(15)
+                    .HasColumnName("NationalIDNumber");
+
+                entity.Property(e => e.Rate).HasColumnType("money");
+
+                entity.Property(e => e.Suffix).HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<AddEditEmployee3>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("AddEditEmployee3", "HumanResources");
+
+                entity.Property(e => e.BusinessEntityId).HasColumnName("BusinessEntityID");
+
+                entity.Property(e => e.Department)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.EndDate).HasColumnType("date");
+
+                entity.Property(e => e.JobTitle)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Shift)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.StartDate).HasColumnType("date");
+            });
 
             modelBuilder.Entity<Address>(entity =>
             {

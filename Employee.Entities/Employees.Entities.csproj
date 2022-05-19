@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dto\AddEditEmployeeDto\" />
     <Folder Include="Models\" />
   </ItemGroup>
 

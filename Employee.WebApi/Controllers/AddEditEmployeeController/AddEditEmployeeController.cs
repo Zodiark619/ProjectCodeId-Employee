@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
+using Employees.Contracts;
+using Employees.Entities.Dto.AddEditEmployeeDto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Employees.WebApi.Controllers.AddEditEmployeeController
 {
@@ -9,37 +12,37 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
     [ApiController]
     public class AddEditEmployeeController : ControllerBase
     {
-        // GET: api/<AddEditEmployeeController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IRepositoryManager _repository;
+        private readonly ILoggerManager _logger;
+        private readonly IMapper _mapper;
+
+        public AddEditEmployeeController(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
         {
-            return new string[] { "value1", "value2" };
+            _repository = repository;
+            _logger = logger;
+            _mapper = mapper;
         }
 
-        // GET api/<AddEditEmployeeController>/5
+
+        //[HttpGet]
+        //[HttpGet("{id}", Name = "CustomerById")]
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> GetEmployee(int id)
         {
-            return "value";
+            
+            var employee = await _repository.AddEditEmployeeRepository.GetEmployeeAsync(id, false);
+            if (employee == null)
+            {
+                _logger.LogInfo($"Customer with id :{id} not found");
+                return NotFound();
+            }
+            else
+            {
+                var employeeDto = _mapper.Map<AddEditEmployeeDto>(employee);
+                return Ok(employeeDto);
+                
+            }
         }
 
-        // POST api/<AddEditEmployeeController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-
-        }
-
-        // PUT api/<AddEditEmployeeController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<AddEditEmployeeController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
