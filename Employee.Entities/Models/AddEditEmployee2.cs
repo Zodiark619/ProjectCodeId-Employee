@@ -8,6 +8,7 @@ namespace Employees.Entities.Models
 {
     public partial class AddEditEmployee2
     {
+ 
         public int BusinessEntityId { get; set; }
         public string NationalIdnumber { get; set; }
         public DateTime BirthDate { get; set; }
@@ -24,8 +25,7 @@ namespace Employees.Entities.Models
         public string LastName { get; set; }
         public string Suffix { get; set; }
 
-       /* [ForeignKey(nameof("BusinessEntityId"))]
-        public int BusinessEntityId { get; set; }
-        public AddEditEmployee3 AddEditEmployee3 { get; set; }*/
+
+        //public virtual IList<AddEditEmployee3> Departments { get; set; }
     }
 }

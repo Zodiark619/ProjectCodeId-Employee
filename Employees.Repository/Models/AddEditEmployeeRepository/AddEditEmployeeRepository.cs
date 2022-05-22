@@ -12,8 +12,11 @@ namespace Employees.Repository.Models.AddEditEmployeeRepository
 {
     public class AddEditEmployeeRepository : RepositoryBase<AddEditEmployee2>, IAddEditEmployeeRepository
     {
-        public AddEditEmployeeRepository(AdventureWorks2019Context repositoryContext) : base(repositoryContext)
+        private readonly AdventureWorks2019Context _context;
+
+        public AddEditEmployeeRepository(AdventureWorks2019Context context):base(context)
         {
+            _context = context;
         }
 
         public void CreateEmployeeAsync(AddEditEmployee2 employee)
@@ -32,16 +35,24 @@ namespace Employees.Repository.Models.AddEditEmployeeRepository
         }
 
         public async Task<AddEditEmployee2> GetEmployeeAsync(int id, bool trackChanges)
-        =>
-             await FindAll(trackChanges)
-                .Where(c=>c.BusinessEntityId.Equals(id))
-                   .OrderBy(c => c.BusinessEntityId)
-                   .ThenByDescending(x => x.ModifiedDate)
-                   .FirstOrDefaultAsync();
-            //await FindByCondition(c => c.BusinessEntityId.Equals(id), trackChanges).SingleOrDefaultAsync();
-            
+        // =>
+        {
+            //var query = await repositoryContext.AddEditEmployee2s.Include(c=>c.Departments).Where(q=>q.BusinessEntityId==id).ToListAsync();
+                       return await FindAll(trackChanges)
+                      //  .Contains(d=>d.Departments)
+                            .Where(c => c.BusinessEntityId.Equals(id))
+                               .OrderBy(c => c.BusinessEntityId)
+                               .ThenByDescending(x => x.ModifiedDate)
+                              // .Contains(c=>c.Departments)
+                               .FirstOrDefaultAsync();
 
-        
+
+        }
+
+        //await FindByCondition(c => c.BusinessEntityId.Equals(id), trackChanges).SingleOrDefaultAsync();
+
+
+
 
 
         public void UpdateEmployeeAsync(AddEditEmployee2 employee)
@@ -49,5 +60,37 @@ namespace Employees.Repository.Models.AddEditEmployeeRepository
             Update(employee);
 
         }
+
+
+
+        public async Task<AddEditEmployee2> GetIncludeEmployeeAsync(int id, bool trackChanges)
+        {
+           /* var query = await FindAll(trackChanges)
+               .OrderBy(c => c.BusinessEntityId)
+               .ThenByDescending(x => x.ModifiedDate)
+               .ThenByDescending(x=>x.)
+               .ToListAsync();*/
+            /*var result = await _context.Set<AddEditEmployee2>()
+                .Where(c => c.BusinessEntityId.Equals(id))
+                
+                .OrderBy(c => c.BusinessEntityId)
+                 .ThenByDescending(x => x.ModifiedDate)
+                 .Include(q => q.Departments)
+                 
+                .FirstOrDefaultAsync(q=>q.BusinessEntityId==id);
+                
+            return result;*/
+            /*var country = await result.Include(q => q.Hotels)
+                
+                .ToListAsync(q => q.Id == id);*/
+
+            return await FindAll(trackChanges)
+                            //  .Contains(d=>d.Departments)
+                            .Where(c => c.BusinessEntityId.Equals(id))
+                               .OrderBy(c => c.BusinessEntityId)
+                               .ThenByDescending(x => x.ModifiedDate)
+                               .FirstOrDefaultAsync();
+        }
+
     }
 }

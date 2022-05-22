@@ -36,6 +36,7 @@ namespace Employees.WebApi
             services.ConfigureLoggerService();
             services.ConfigureDbContext(Configuration);
             services.ConfigureRepositoryManager();
+            services.ConfigureAddEditEmployeeRepositoryManager();
 
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();

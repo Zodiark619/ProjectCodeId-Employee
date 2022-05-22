@@ -1,8 +1,10 @@
 ﻿using Employees.Contracts;
+using Employees.Contracts.Interface.IAddEditEmployeeRepository;
 using Employees.Entities;
 using Employees.Entities.Context;
 using Employees.LoggerService;
 using Employees.Repository;
+using Employees.Repository.Models.AddEditEmployeeRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +40,8 @@ namespace Employees.WebApi.Extensions
 
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
-       
+
+        public static void ConfigureAddEditEmployeeRepositoryManager(this IServiceCollection services) =>
+            services.AddScoped<IAddEditEmployeeRepositoryManager, AddEditEmployeeRepositoryManager>();
     }
 }

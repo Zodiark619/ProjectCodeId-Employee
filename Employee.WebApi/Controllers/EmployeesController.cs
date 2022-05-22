@@ -22,13 +22,13 @@ namespace Employees.WebApi.Controllers
             _logger = logger;
             _mapper = mapper;
         }
-        [HttpGet]
+        /*[HttpGet]
         public async Task<IActionResult> GetAllEmployeesAsync()
         {
             var employee = await _repository.Employee.GetAllEmployeeAsync(trackChanges: false);
             var employeeDto = _mapper.Map<IEnumerable<EmployeesDto>>(employee);
 
             return Ok(employeeDto);
-        }
+        }*/
     }
 }

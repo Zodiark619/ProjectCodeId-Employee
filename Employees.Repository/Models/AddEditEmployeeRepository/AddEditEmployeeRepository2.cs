@@ -29,7 +29,7 @@ namespace Employees.Repository.Models.AddEditEmployeeRepository
         public async Task<IEnumerable<AddEditEmployee3>> GetAllEmployeeAsync(bool trackChanges)
         {
 
-              return await FindAll(trackChanges).OrderBy(c => c.BusinessEntityId).ToListAsync();
+              return await FindAll(trackChanges).OrderBy(c => c.DepartmentId).ToListAsync();
           
         }
 
@@ -37,8 +37,8 @@ namespace Employees.Repository.Models.AddEditEmployeeRepository
         =>
             //await FindByCondition(c => c.BusinessEntityId.Equals(id) , trackChanges).SingleOrDefaultAsync();
               await FindAll(trackChanges)
-                  .Where(c => c.BusinessEntityId.Equals(id))
-                     .OrderBy(c => c.BusinessEntityId)
+                  .Where(c => c.DepartmentId.Equals(id))
+                     .OrderBy(c => c.DepartmentId)
                      .ThenByDescending(x => x.ModifiedDate)
                      .ToListAsync();
 

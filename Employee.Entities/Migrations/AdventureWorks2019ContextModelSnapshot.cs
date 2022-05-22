@@ -20,6 +20,111 @@ namespace Employees.Entities.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Employees.Entities.Models.AddEditEmployee2", b =>
+                {
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("BusinessEntityId")
+                        .HasColumnType("int")
+                        .HasColumnName("BusinessEntityID");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasMaxLength(1)
+                        .HasColumnType("nchar(1)")
+                        .IsFixedLength(true);
+
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("MaritalStatus")
+                        .IsRequired()
+                        .HasMaxLength(1)
+                        .HasColumnType("nchar(1)")
+                        .IsFixedLength(true);
+
+                    b.Property<string>("MiddleName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("NationalIdnumber")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)")
+                        .HasColumnName("NationalIDNumber");
+
+                    b.Property<byte>("PayFrequency")
+                        .HasColumnType("tinyint");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("money");
+
+                    b.Property<short>("SickLeaveHours")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("Suffix")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<short>("VacationHours")
+                        .HasColumnType("smallint");
+
+                    b.ToView("AddEditEmployee2", "HumanResources");
+                });
+
+            modelBuilder.Entity("Employees.Entities.Models.AddEditEmployee3", b =>
+                {
+                    b.Property<int>("BusinessEntityId")
+                        .HasColumnType("int")
+                        .HasColumnName("BusinessEntityID");
+
+                    b.Property<string>("Department")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("JobTitle")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Shift")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.ToView("AddEditEmployee3", "HumanResources");
+                });
+
             modelBuilder.Entity("Employees.Entities.Models.Address", b =>
                 {
                     b.Property<int>("AddressId")

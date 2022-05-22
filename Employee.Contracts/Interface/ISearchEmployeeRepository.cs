@@ -15,6 +15,6 @@ namespace Employees.Contracts.Interface
         void CreateEmployeeAsync(SearchEmployee employee);
         void DeleteEmployeeAsync(SearchEmployee employee);
         void UpdateEmployeeAsync(SearchEmployee employee);
-        Task<IEnumerable<SearchEmployee>> GetPaginationCustomerAsync(EmployeesParameters employeesParameters, bool trackChanges,string choice,string order);
+        Task<IEnumerable<SearchEmployee>> GetPaginationCustomerAsync(EmployeesParameters employeesParameters, bool trackChanges, string choice, string order);
     }
 }

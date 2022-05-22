@@ -14,5 +14,6 @@ namespace Employees.Contracts.Interface.IAddEditEmployeeRepository
         void CreateEmployeeAsync(AddEditEmployee2 employee);
         void DeleteEmployeeAsync(AddEditEmployee2 employee);
         void UpdateEmployeeAsync(AddEditEmployee2 employee);
+        Task<AddEditEmployee2> GetIncludeEmployeeAsync(int id, bool trackChanges);
     }
 }

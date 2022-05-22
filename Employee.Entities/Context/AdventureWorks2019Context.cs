@@ -1,7 +1,4 @@
-﻿using Employees.Entities.Models;
-using Microsoft.EntityFrameworkCore;
-
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Employees.Entities.Models;
@@ -179,8 +176,6 @@ namespace Employees.Entities.Context
                 entity.HasNoKey();
 
                 entity.ToView("AddEditEmployee3", "HumanResources");
-
-                entity.Property(e => e.BusinessEntityId).HasColumnName("BusinessEntityID");
 
                 entity.Property(e => e.Department)
                     .IsRequired()

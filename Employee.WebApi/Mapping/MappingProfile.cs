@@ -13,11 +13,14 @@ namespace Employees.WebApi.Mapping
 
             CreateMap<SearchEmployee, SearchEmployeesDto>().ReverseMap();
 
-            CreateMap<AddEditEmployeeDto, AddEditEmployee2>().ReverseMap();  //vdeparment
+            //     CreateMap<AddDto, AddEditEmployee2>().ReverseMap();  //vdeparment
 
-            CreateMap<AddEditEmployeeDto2, AddEditEmployee3>().ReverseMap();  //shift
+            //     CreateMap<AddEditEmployeeDto2, AddEditEmployee3>().ReverseMap();  //shift
 
 
+            //vdeparment
+            CreateMap<Person, SearchEmployeeDto>().ReverseMap();
+            
 
         }
 
