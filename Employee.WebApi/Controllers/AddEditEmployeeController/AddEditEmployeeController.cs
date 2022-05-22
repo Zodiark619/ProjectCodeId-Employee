@@ -28,32 +28,87 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
         }
 
 
-        /*[HttpPost("addEmployee")]
-        public async Task<IActionResult> PostCustomer([FromBody] AddDto addDto)
-        {
-            var customerEntity = _mapper.Map<Employee>(addDto);
+     /*   [HttpPost("addEmployee")]
+        public async Task<IActionResult> PostCustomer([FromBody] GetPersonDto2 dto)
+        {*/
+            /*var customerEntity = _mapper.Map<Employee>(dto);
             _repository.AddEmployee.CreateEmployeeAsync(customerEntity);
             await _repository.SaveAsync();
 
             var customerResult = _mapper.Map<AddDto>(customerEntity);
             return CreatedAtRoute("AddById", new { id = customerEntity.BusinessEntityId }, customerResult);
-          
-        }*/
+          */
+            //------------------------------------------
+            /*var employee = new Employee
+            {
+                NationalIdnumber = dto.NationalIdnumber,
+                BirthDate = dto.BirthDate,
+                MaritalStatus = dto.MaritalStatus,
+                Gender = dto.Gender,
+                HireDate = dto.HireDate,
+                VacationHours = dto.VacationHours,
+                SickLeaveHours = dto.SickLeaveHours,
+                JobTitle = dto.JobTitle,
+                ModifiedDate = DateTime.Now,
+            };
+            _repository.AddEmployee.CreateEmployeeAsync(employee);
+            var allDepartment = _repository.DepartmentRepository.GetAllEmployeeAsync(false);
+
+
+            var employeeDepartmentHistory = new EmployeeDepartmentHistory
+            {
+                DepartmentId = _repository.DepartmentRepository.GetDepartment(dto.false),
+            }
+            await _repository.SaveAsync();*/
+
+       // }
         [HttpGet("{id}", Name = "CustomerById")]
         public async Task<IActionResult> GetEmployee(int id)
         {
             var person = await _repository.SearchEmployee.GetEmployeeAsync(id, false); //person
             var employee = await _repository.AddEmployee.GetEmployeeAsync(id, false); //employee
+            var pay = await _repository.EmployeePayHistoryRepository.GetEmployeeAsync(id, false); //payhistory
+            
+            var departmentHistory = await _repository.EmployeeDepartmentHistoryRepository.GetEmployeeAsync(id, false); //department
+
+            var shift_id = Convert.ToByte(departmentHistory.ShiftId);
+            var shift = await _repository.ShiftRepository.GetEmployeeAsync(shift_id, false); //shift
+            var department_id = Convert.ToByte(departmentHistory.DepartmentId);
+            var department = await _repository.DepartmentRepository.GetEmployeeAsync(department_id, false); //shift
+
+
+
             if (person == null)
             {
                 return NotFound();
             }
             
             
-                var employeeDto = new GetPersonDto
+                var employeeDto = new GetPersonDto2
                 {
                     FullName = person.FirstName + " " + person.LastName,
-                    Suffix = person.Suffix
+                    Suffix = person.Suffix,
+
+                    NationalIdnumber = employee.NationalIdnumber,
+                    BirthDate = employee.BirthDate,
+                    MaritalStatus = employee.MaritalStatus,
+                    Gender = employee.Gender,
+                    HireDate = employee.HireDate,
+                    VacationHours = employee.VacationHours,
+                    SickLeaveHours = employee.SickLeaveHours,
+                    
+                    Rate = pay.Rate,
+                    //ModifiedDate = pay.ModifiedDate,
+                    PayFrequency = pay.PayFrequency,
+
+                    Department=department.Name,
+                    JobTitle = employee.JobTitle,
+                    Shift = shift.Name,
+                    StartTime = shift.StartTime,
+                    EndTime = shift.EndTime
+
+
+
                 };
                 return Ok(employeeDto);
             

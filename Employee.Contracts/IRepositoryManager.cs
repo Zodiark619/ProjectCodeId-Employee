@@ -10,7 +10,7 @@ namespace Employees.Contracts
 {
     public interface IRepositoryManager
     {
-
+      
         IAddEditEmployeeRepository AddEditEmployeeRepository { get; }
         IAddEditEmployeeRepository2 AddEditEmployeeRepository2 { get; }
 

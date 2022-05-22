@@ -8,8 +8,13 @@ namespace Employees.Contracts.Interface.IAddEditEmployeeRepository
 {
     public interface IAddEditEmployeeRepositoryManager
     {
-            IAddEmployee AddEmployee { get; }
+        IAddEmployee AddEmployee { get; }
         ISearchEmployee SearchEmployee { get; }
-            Task SaveAsync();
+        IEmployeePayHistoryRepository EmployeePayHistoryRepository { get; }
+        IEmployeeDepartmentHistoryRepository EmployeeDepartmentHistoryRepository { get;}
+            IShiftRepository ShiftRepository {get;}
+        IDepartmentRepository DepartmentRepository { get; }
+
+        Task SaveAsync();
     }
 }
