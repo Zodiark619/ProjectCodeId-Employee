@@ -14,6 +14,6 @@ namespace Employees.Contracts.Interface
         void CreateEmployeeAsync(Department employee);
         void DeleteEmployeeAsync(Department employee);
         void UpdateEmployeeAsync(Department employee);
-        public Task<Department> GetDepartment(byte id, bool trackChanges);
+        public Task<short> GetDepartmentid(string name, bool trackChanges);
     }
 }

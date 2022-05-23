@@ -42,5 +42,12 @@ namespace Employees.Repository.Models
         {
             Update(employee);
         }
+        public async Task<byte> GetShiftid(string name, bool trackChanges)
+        {
+            var department = await FindAll(trackChanges)
+                                    .Where(c => c.Name.Equals(name))
+                                    .SingleOrDefaultAsync();
+            return department.ShiftId;
+        }
     }
 }

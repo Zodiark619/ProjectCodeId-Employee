@@ -14,5 +14,7 @@ namespace Employees.Contracts.Interface
         void CreateEmployeeAsync(Shift employee);
         void DeleteEmployeeAsync(Shift employee);
         void UpdateEmployeeAsync(Shift employee);
+        public Task<byte> GetShiftid(string name, bool trackChanges);
+
     }
 }

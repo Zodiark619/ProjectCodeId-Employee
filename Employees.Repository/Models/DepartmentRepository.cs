@@ -40,12 +40,13 @@ namespace Employees.Repository.Models
         {
             Update(employee);
         }
-        public async Task<Department> GetDepartment(byte id, bool trackChanges)
+        public async Task<short> GetDepartmentid(string name, bool trackChanges)
         {
             var department=await FindAll(trackChanges)
-                                    .Where(c=>c.DepartmentId.Equals(id))    
+                                    .Where(c=>c.Name.Equals(name))    
                                     .SingleOrDefaultAsync();
-            return department;
+            return department.DepartmentId;
         }
+        
     }
 }

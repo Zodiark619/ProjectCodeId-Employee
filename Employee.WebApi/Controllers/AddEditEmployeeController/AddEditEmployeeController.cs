@@ -28,9 +28,9 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
         }
 
 
-     /*   [HttpPost("addEmployee")]
-        public async Task<IActionResult> PostCustomer([FromBody] GetPersonDto2 dto)
-        {*/
+       [HttpPost("addEmployee")]
+        public async Task<IActionResult> PostCustomer([FromBody] GetPersonDto3 dto)
+        {
             /*var customerEntity = _mapper.Map<Employee>(dto);
             _repository.AddEmployee.CreateEmployeeAsync(customerEntity);
             await _repository.SaveAsync();
@@ -39,10 +39,18 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
             return CreatedAtRoute("AddById", new { id = customerEntity.BusinessEntityId }, customerResult);
           */
             //------------------------------------------
-            /*var employee = new Employee
+            
+            var dateAndTime = DateTime.Now;
+            var date = dateAndTime.Date;
+            var employee = new Employee
             {
+                LoginId=dto.LoginId,
+                SalariedFlag=dto.SalariedFlag,
+                CurrentFlag=dto.CurrentFlag,
+                Rowguid=dto.Rowguid,
+               BusinessEntityId=dto.BusinessEntityId,
                 NationalIdnumber = dto.NationalIdnumber,
-                BirthDate = dto.BirthDate,
+                BirthDate =dto.BirthDate,
                 MaritalStatus = dto.MaritalStatus,
                 Gender = dto.Gender,
                 HireDate = dto.HireDate,
@@ -52,16 +60,66 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
                 ModifiedDate = DateTime.Now,
             };
             _repository.AddEmployee.CreateEmployeeAsync(employee);
-            var allDepartment = _repository.DepartmentRepository.GetAllEmployeeAsync(false);
-
+           
+            await _repository.SaveAsync();
+            var departmentId = _repository.DepartmentRepository.GetDepartmentid(dto.Department,false);
+            var shiftId = _repository.ShiftRepository.GetShiftid(dto.Shift, false);
+            
+            
 
             var employeeDepartmentHistory = new EmployeeDepartmentHistory
             {
-                DepartmentId = _repository.DepartmentRepository.GetDepartment(dto.false),
-            }
-            await _repository.SaveAsync();*/
 
-       // }
+                BusinessEntityId = dto.BusinessEntityId,
+
+                DepartmentId = await departmentId,
+                ShiftId=await shiftId,
+                StartDate=date,
+                ModifiedDate=DateTime.Now  
+
+            };
+            _repository.EmployeeDepartmentHistoryRepository.CreateEmployeeAsync(employeeDepartmentHistory);
+            await _repository.SaveAsync();
+            var employeePayHistory = new EmployeePayHistory
+            {
+
+                BusinessEntityId = dto.BusinessEntityId,
+
+                RateChangeDate = DateTime.Now,
+                Rate=dto.Rate,
+                PayFrequency=Convert.ToByte(dto.PayFrequency),
+                ModifiedDate=DateTime.Now
+            };
+            _repository.EmployeePayHistoryRepository.CreateEmployeeAsync(employeePayHistory);
+
+
+            await _repository.SaveAsync();
+
+
+             return CreatedAtRoute("CustomerById", new { id = employee.BusinessEntityId }, employee);
+            
+        }
+
+        //unique rowguid,nationalidnumber,businessentityid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         [HttpGet("{id}", Name = "CustomerById")]
         public async Task<IActionResult> GetEmployee(int id)
         {
@@ -83,8 +141,8 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
                 return NotFound();
             }
             
-            
-                var employeeDto = new GetPersonDto2
+
+            var employeeDto = new GetPersonDto2
                 {
                     FullName = person.FirstName + " " + person.LastName,
                     Suffix = person.Suffix,
@@ -98,7 +156,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
                     SickLeaveHours = employee.SickLeaveHours,
                     
                     Rate = pay.Rate,
-                    //ModifiedDate = pay.ModifiedDate,
+                    ModifiedDate = employee.ModifiedDate,
                     PayFrequency = pay.PayFrequency,
 
                     Department=department.Name,
