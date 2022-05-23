@@ -40,7 +40,10 @@ namespace Employees.WebApi
 
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+      /*      services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
+    */        services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Employee.WebApi", Version = "v1" });
             });

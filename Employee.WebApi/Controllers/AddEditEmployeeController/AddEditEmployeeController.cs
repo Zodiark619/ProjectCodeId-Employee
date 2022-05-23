@@ -28,7 +28,123 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
         }
 
 
-       [HttpPost("addEmployee")]
+
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEmployee(int id, [FromBody] GetPersonDto4 dto)
+        {
+            var dateAndTime = DateTime.Now;
+            var date = dateAndTime.Date;
+            if (dto == null)
+            {
+               // _logger.LogError("Customer must not be null");
+                return BadRequest("Employee must not be null");
+            }
+
+
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for customerdto object");
+                return UnprocessableEntity(ModelState);
+            }
+            var customerEntity = await _repository.AddEmployee.GetEmployeeAsync(id, trackChanges: true);
+
+            if (customerEntity == null)
+            {
+               // _logger.LogError($"Company with id : {id} not found");
+                return NotFound();
+            }
+          
+
+            // BusinessEntity=dto.BusinessEntityId,
+            customerEntity.NationalIdnumber = dto.NationalIdnumber;
+            customerEntity.BirthDate = dto.BirthDate;
+            customerEntity.MaritalStatus = dto.MaritalStatus;
+            customerEntity.Gender = dto.Gender;
+            customerEntity.HireDate = dto.HireDate;
+            customerEntity.VacationHours = dto.VacationHours;
+            customerEntity.SickLeaveHours = dto.SickLeaveHours;
+             customerEntity.JobTitle = dto.JobTitle;
+                customerEntity.ModifiedDate = DateTime.Now;
+           
+            _repository.AddEmployee.UpdateEmployeeAsync(customerEntity);
+
+            await _repository.SaveAsync();
+
+            var departmentId = await _repository.DepartmentRepository.GetDepartmentid(dto.Department, true);
+            var shiftId =await _repository.ShiftRepository.GetShiftid(dto.Shift, true);
+
+            var departmentOlder=await _repository.EmployeeDepartmentHistoryRepository.GetEmployeeAsync(id, true);
+            departmentOlder.EndDate = DateTime.Now;
+            _repository.EmployeeDepartmentHistoryRepository.UpdateEmployeeAsync(departmentOlder);
+            await _repository.SaveAsync();
+
+            var employeeDepartmentHistory = new EmployeeDepartmentHistory
+            {
+
+
+                BusinessEntityId = dto.BusinessEntityId,
+
+                DepartmentId =  departmentId,
+                ShiftId =  shiftId,
+                StartDate = date,
+                ModifiedDate = DateTime.Now
+
+            };
+            _repository.EmployeeDepartmentHistoryRepository.CreateEmployeeAsync(employeeDepartmentHistory);
+            await _repository.SaveAsync();
+
+
+
+
+
+            var payOlder = await _repository.EmployeePayHistoryRepository.GetEmployeeAsync(id, true);
+            var rateChange = payOlder.RateChangeDate;
+            var rate=payOlder.Rate;
+            // _repository.EmployeeDepartmentHistoryRepository.UpdateEmployeeAsync(departmentOlder);
+
+            if (dto.Rate != rate)
+            {
+                rateChange=DateTime.Now;
+            }
+            
+            var employeePayHistory = new EmployeePayHistory
+            {
+
+                BusinessEntityId = dto.BusinessEntityId,
+
+                RateChangeDate = rateChange,
+                Rate = dto.Rate,
+                PayFrequency = Convert.ToByte(dto.PayFrequency),
+                ModifiedDate = DateTime.Now
+            };
+            _repository.EmployeePayHistoryRepository.CreateEmployeeAsync(employeePayHistory);
+
+
+           
+
+            //_repository.Customer.UpdateCustomer(customerEntity);
+            await _repository.SaveAsync();
+            return NoContent();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        [HttpPost("addEmployee")]
         public async Task<IActionResult> PostCustomer([FromBody] GetPersonDto3 dto)
         {
             /*var customerEntity = _mapper.Map<Employee>(dto);
@@ -56,10 +172,10 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
                 HireDate = dto.HireDate,
                 VacationHours = dto.VacationHours,
                 SickLeaveHours = dto.SickLeaveHours,
-                JobTitle = dto.JobTitle,
-                ModifiedDate = DateTime.Now,
+                JobTitle = dto.JobTitle
+               // ModifiedDate = DateTime.Now,
             };
-            _repository.AddEmployee.CreateEmployeeAsync(employee);
+             _repository.AddEmployee.CreateEmployeeAsync(employee);
            
             await _repository.SaveAsync();
             var departmentId = _repository.DepartmentRepository.GetDepartmentid(dto.Department,false);
@@ -75,7 +191,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
                 DepartmentId = await departmentId,
                 ShiftId=await shiftId,
                 StartDate=date,
-                ModifiedDate=DateTime.Now  
+               // ModifiedDate=DateTime.Now  
 
             };
             _repository.EmployeeDepartmentHistoryRepository.CreateEmployeeAsync(employeeDepartmentHistory);
@@ -88,21 +204,38 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
                 RateChangeDate = DateTime.Now,
                 Rate=dto.Rate,
                 PayFrequency=Convert.ToByte(dto.PayFrequency),
-                ModifiedDate=DateTime.Now
+             //   ModifiedDate=DateTime.Now
             };
             _repository.EmployeePayHistoryRepository.CreateEmployeeAsync(employeePayHistory);
 
 
             await _repository.SaveAsync();
 
+            //var employeeEndResult = _repository.AddEmployee.GetEmployeeAsync(dto.BusinessEntityId, false);
+            var employeeEndResult = _mapper.Map<EmployeeDto>(employee);
 
-             return CreatedAtRoute("CustomerById", new { id = employee.BusinessEntityId }, employee);
+
+            return CreatedAtRoute("EmployeeById", new { id = employeeEndResult.BusinessEntityId }, employeeEndResult);
             
         }
 
         //unique rowguid,nationalidnumber,businessentityid
 
-
+        [HttpGet("/employee/{id}", Name = "EmployeeById")]
+        public IActionResult GetEmployeeOnly(int id)
+        {
+            var employee = _repository.AddEmployee.GetEmployeeAsync(id, false);
+            if (employee == null)
+            {
+                //_logger.LogInfo($"Category with Id : {id} doesn't exist");
+                return NotFound();
+            }
+            else
+            {
+                var employeeDto = _mapper.Map<EmployeeDto>(employee);
+                return Ok(employeeDto);
+            }
+        }
 
 
 

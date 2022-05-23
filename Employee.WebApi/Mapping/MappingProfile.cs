@@ -20,7 +20,8 @@ namespace Employees.WebApi.Mapping
 
             //vdeparment
             CreateMap<Person, SearchEmployeeDto>().ReverseMap();
-            
+            CreateMap<Employee, EmployeeDto>().ReverseMap();
+
 
         }
 
