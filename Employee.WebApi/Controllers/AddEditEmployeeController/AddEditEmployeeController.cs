@@ -221,7 +221,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
 
         //unique rowguid,nationalidnumber,businessentityid
 
-        [HttpGet("/employee/{id}", Name = "EmployeeById")]
+        [HttpGet("employee/{id}", Name = "EmployeeById")]
         public IActionResult GetEmployeeOnly(int id)
         {
             var employee = _repository.AddEmployee.GetEmployeeAsync(id, false);
@@ -253,11 +253,32 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
 
 
 
-        [HttpGet("{id}", Name = "CustomerById")]
+        [HttpGet("searchPerson/{id}", Name = "CustomerById")]
         public async Task<IActionResult> GetEmployee(int id)
         {
             var person = await _repository.SearchEmployee.GetEmployeeAsync(id, false); //person
-            var employee = await _repository.AddEmployee.GetEmployeeAsync(id, false); //employee
+            
+                var employee = await _repository.AddEmployee.GetEmployeeAsync(id, false); //employee
+            if(employee==null)
+            {
+                var dto = new GetPersonDto
+                {
+                    FullName = person.FirstName + " " + person.LastName,
+                    Suffix = person.Suffix
+                };
+                return Ok(dto);
+            }
+            
+                
+            
+            
+            
+            
+            
+            
+            
+            
+            
             var pay = await _repository.EmployeePayHistoryRepository.GetEmployeeAsync(id, false); //payhistory
             
             var departmentHistory = await _repository.EmployeeDepartmentHistoryRepository.GetEmployeeAsync(id, false); //department
