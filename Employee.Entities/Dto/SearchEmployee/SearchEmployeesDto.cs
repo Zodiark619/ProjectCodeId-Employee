@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Employees.Entities.Models;
 
-namespace Employees.Entities.Dto
+namespace Employees.Entities.Dto.SearchEmployee
 {
     public class SearchEmployeesDto
     {

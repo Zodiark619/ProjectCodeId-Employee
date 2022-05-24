@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Employee.Entities\Employees.Entities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\SearchEmployee\" />
+  </ItemGroup>
+
 </Project>

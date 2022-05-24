@@ -2,6 +2,8 @@
 using Employees.Entities.Models;
 using AutoMapper;
 using Employees.Entities.Dto.AddEditEmployeeDto;
+using Employees.Entities.Dto.DepartmentOnly;
+using Employees.Entities.Dto.SearchEmployee;
 
 namespace Employees.WebApi.Mapping
 {
@@ -19,8 +21,8 @@ namespace Employees.WebApi.Mapping
 
 
             //vdeparment
-            CreateMap<Person, SearchEmployeeDto>().ReverseMap();
-            CreateMap<Employee, EmployeeDto>().ReverseMap();
+            CreateMap<Person, SearchEmployeeAEDto>().ReverseMap();
+            CreateMap<Employee, EmployeeOnlyAEDto>().ReverseMap();
 
 
 

@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Employees.Contracts;
-using Employees.Entities.Dto;
+using Employees.Entities.Dto.SearchEmployee;
 using Employees.Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Employees.WebApi.Controllers
+namespace Employees.WebApi.Controllers.SearchEmployee
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -25,9 +25,9 @@ namespace Employees.WebApi.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> GetEmployeeSearch([FromQuery] EmployeesParameters employeesParameters, string choice="BusinessEntityId",string order = "Descending")
+        public async Task<IActionResult> GetEmployeeSearch([FromQuery] EmployeesParameters employeesParameters, string choice = "BusinessEntityId", string order = "Descending")
         {
-            var employeeSearch = await _repository.SearchEmployee.GetPaginationCustomerAsync(employeesParameters, trackChanges: false,choice,order);
+            var employeeSearch = await _repository.SearchEmployee.GetPaginationCustomerAsync(employeesParameters, trackChanges: false, choice, order);
             var employeeDto = _mapper.Map<IEnumerable<SearchEmployeesDto>>(employeeSearch);
             return Ok(employeeDto);
         }

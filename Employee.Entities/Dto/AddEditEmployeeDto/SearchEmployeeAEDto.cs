@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Employees.Entities.Dto.AddEditEmployeeDto
 {
-    public class SearchEmployeeDto
+    public class SearchEmployeeAEDto
     {
         public int BusinessEntityId { get; set; }
         public string FirstName { get; set; }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Employees.Entities.Dto
+namespace Employees.Entities.Dto.DepartmentOnly
 {
     public class DepartmentDto
     {

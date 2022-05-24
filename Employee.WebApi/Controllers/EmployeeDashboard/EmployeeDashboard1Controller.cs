@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace Employees.WebApi.Controllers
+namespace Employees.WebApi.Controllers.EmployeeDashboard
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -25,33 +25,33 @@ namespace Employees.WebApi.Controllers
             _mapper = mapper;
         }
 
-        
-       /* public async Task<IActionResult> EmployeeDashboard1Rate(EmployeePayHistory employeePayHistory)
-        {
-            var employeeSearch = await _repository.EmployeeDashboard.ShowEmployeeDashboard1(employeePayHistory, trackChanges: false);
-         */   /* { "<10",0 },
-                 { "11-15",0 },
-                 { "16-20",0 },
-                 { "21-45",0 },
-                 { ">45",0 }*/
 
-            /*int meong = employeeSearch["<10"];
-            string juju = Convert.ToString(meong);
-            return JsonConvert.SerializeObject(juju);
+        /* public async Task<IActionResult> EmployeeDashboard1Rate(EmployeePayHistory employeePayHistory)
+         {
+             var employeeSearch = await _repository.EmployeeDashboard.ShowEmployeeDashboard1(employeePayHistory, trackChanges: false);
+          */   /* { "<10",0 },
+                  { "11-15",0 },
+                  { "16-20",0 },
+                  { "21-45",0 },
+                  { ">45",0 }*/
+
+        /*int meong = employeeSearch["<10"];
+        string juju = Convert.ToString(meong);
+        return JsonConvert.SerializeObject(juju);
 */
-            //string json = JsonConvert.SerializeObject(employeeSearch, Formatting.Indented);
+        //string json = JsonConvert.SerializeObject(employeeSearch, Formatting.Indented);
 
-            // return Ok(JsonConvert.SerializeObject(json));
-            [HttpGet("dashboard1")]
-            public async Task<string> EmployeeDashboard2Department()
+        // return Ok(JsonConvert.SerializeObject(json));
+        [HttpGet("dashboard1")]
+        public async Task<string> EmployeeDashboard2Department()
         {
             var employeeSearch = await _repository.EmployeeDashboard1.ShowEmployeeDashboard1(trackChanges: false);
 
             return JsonConvert.SerializeObject(employeeSearch);
-                
-            }
+
+        }
 
 
-        
+
     }
 }

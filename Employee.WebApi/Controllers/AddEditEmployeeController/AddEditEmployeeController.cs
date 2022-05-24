@@ -32,7 +32,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEmployee(int id, [FromBody] GetPersonDto4 dto)
+        public async Task<IActionResult> UpdateEmployee(int id, [FromBody] EditAEDTO dto)
         {
             var dateAndTime = DateTime.Now;
             var date = dateAndTime.Date;
@@ -127,7 +127,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
 
             //_repository.Customer.UpdateCustomer(customerEntity);
             await _repository.SaveAsync();
-            return NoContent();
+            return Ok("Updated successfully");
         }
 
 
@@ -145,7 +145,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
 
 
         [HttpPost("addEmployee")]
-        public async Task<IActionResult> PostCustomer([FromBody] GetPersonDto3 dto)
+        public async Task<IActionResult> PostCustomer([FromBody] AddEmployeeAEDto dto)
         {
             /*var customerEntity = _mapper.Map<Employee>(dto);
             _repository.AddEmployee.CreateEmployeeAsync(customerEntity);
@@ -212,7 +212,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
             await _repository.SaveAsync();
 
             //var employeeEndResult = _repository.AddEmployee.GetEmployeeAsync(dto.BusinessEntityId, false);
-            var employeeEndResult = _mapper.Map<EmployeeDto>(employee);
+            var employeeEndResult = _mapper.Map<EmployeeOnlyAEDto>(employee);
 
 
             return CreatedAtRoute("EmployeeById", new { id = employeeEndResult.BusinessEntityId }, employeeEndResult);
@@ -232,7 +232,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
             }
             else
             {
-                var employeeDto = _mapper.Map<EmployeeDto>(employee);
+                var employeeDto = _mapper.Map<EmployeeOnlyAEDto>(employee);
                 return Ok(employeeDto);
             }
         }
@@ -254,14 +254,14 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
 
 
         [HttpGet("searchPerson/{id}", Name = "CustomerById")]
-        public async Task<IActionResult> GetEmployee(int id)
+        public async Task<IActionResult> GetPerson(int id)
         {
             var person = await _repository.SearchEmployee.GetEmployeeAsync(id, false); //person
             
                 var employee = await _repository.AddEmployee.GetEmployeeAsync(id, false); //employee
             if(employee==null)
             {
-                var dto = new GetPersonDto
+                var dto = new PersonAEDto
                 {
                     FullName = person.FirstName + " " + person.LastName,
                     Suffix = person.Suffix
@@ -296,7 +296,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
             }
             
 
-            var employeeDto = new GetPersonDto2
+            var employeeDto = new GetEmployeeAEDto
                 {
                     FullName = person.FirstName + " " + person.LastName,
                     Suffix = person.Suffix,
@@ -332,7 +332,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
         public async Task<IActionResult> GetEmployeeSearch([FromQuery] EmployeesParameters employeesParameters)
         {
             var employeeSearch = await _repository.SearchEmployee.GetPaginationEmployeeAsync(employeesParameters, trackChanges: false);
-            var employeeDto = _mapper.Map<IEnumerable<SearchEmployeeDto>>(employeeSearch);
+            var employeeDto = _mapper.Map<IEnumerable<SearchEmployeeAEDto>>(employeeSearch);
             return Ok(employeeDto);
         }
 

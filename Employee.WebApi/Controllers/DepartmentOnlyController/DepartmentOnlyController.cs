@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Employees.Contracts;
-using Employees.Entities.Dto;
+using Employees.Entities.Dto.DepartmentOnly;
 using Employees.Entities.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Employees.WebApi.Controllers
+namespace Employees.WebApi.Controllers.DepartmentOnlyController
 {
     [Route("api/[controller]")]
     [ApiController]
