@@ -24,15 +24,25 @@ namespace Employees.Repository
         private IAddEditEmployeeRepository2 _addEditEmployeeRepository2;
 
         //
-
+        private IDepartmentOnlyRepository _departmentOnlyRepository;
 
         public RepositoryManager(AdventureWorks2019Context repositoryContext)
         {
             _repositoryContext = repositoryContext;
             
         }
-        
 
+        public IDepartmentOnlyRepository DepartmentOnlyRepository
+        {
+            get
+            {
+                if (_departmentOnlyRepository == null)
+                {
+                    _departmentOnlyRepository = new DepartmentOnlyRepository(_repositoryContext);
+                }
+                return _departmentOnlyRepository;
+            }
+        }
 
         public IEmployeesRepository Employee
         {
