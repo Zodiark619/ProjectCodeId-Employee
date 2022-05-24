@@ -24,6 +24,7 @@ namespace Employees.Repository
         private IAddEditEmployeeRepository2 _addEditEmployeeRepository2;
 
         //
+        private IDepartmentsRepository _departmentsRepository;
 
 
         public RepositoryManager(AdventureWorks2019Context repositoryContext)
@@ -86,13 +87,6 @@ namespace Employees.Repository
         }
 
 
-
-
-
-
-
-
-
         public IAddEditEmployeeRepository AddEditEmployeeRepository
         {
 
@@ -117,15 +111,20 @@ namespace Employees.Repository
                 return _addEditEmployeeRepository2;
             }
         }
+        //Department
+        public IDepartmentsRepository DepartmentsRepository
+        {
+            get
+            {
+                if(_departmentsRepository == null)
+                {
+                    _departmentsRepository = new DepartmentRepository(_repositoryContext);
+                }
+                return _departmentsRepository;
+            }
+        }
 
-
-
-
-
-
-
-
-                public async Task SaveAsync()
+        public async Task SaveAsync()
         =>
             await _repositoryContext.SaveChangesAsync();
         

@@ -19,7 +19,6 @@ namespace Employees.Entities.Context
         }
 
         public virtual DbSet<AddEditEmployee2> AddEditEmployee2s { get; set; }
-        public virtual DbSet<AddEditEmployee3> AddEditEmployee3s { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<AddressType> AddressTypes { get; set; }
         public virtual DbSet<AwbuildVersion> AwbuildVersions { get; set; }
@@ -76,7 +75,6 @@ namespace Employees.Entities.Context
         public virtual DbSet<SalesTerritory> SalesTerritories { get; set; }
         public virtual DbSet<SalesTerritoryHistory> SalesTerritoryHistories { get; set; }
         public virtual DbSet<ScrapReason> ScrapReasons { get; set; }
-        public virtual DbSet<SearchEmployee> SearchEmployees { get; set; }
         public virtual DbSet<Shift> Shifts { get; set; }
         public virtual DbSet<ShipMethod> ShipMethods { get; set; }
         public virtual DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
@@ -119,7 +117,7 @@ namespace Employees.Entities.Context
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=LAPTOP-LJ8HT7OG\\SQLEXPRESS01;Initial Catalog=AdventureWorks2019;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-0GRTEHQ\\SQLEXPRESS03;Initial Catalog=AdventureWorks2019;Trusted_Connection=True");
             }
         }
 
@@ -169,31 +167,6 @@ namespace Employees.Entities.Context
                 entity.Property(e => e.Rate).HasColumnType("money");
 
                 entity.Property(e => e.Suffix).HasMaxLength(10);
-            });
-
-            modelBuilder.Entity<AddEditEmployee3>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("AddEditEmployee3", "HumanResources");
-
-                entity.Property(e => e.Department)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.EndDate).HasColumnType("date");
-
-                entity.Property(e => e.JobTitle)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Shift)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.StartDate).HasColumnType("date");
             });
 
             modelBuilder.Entity<Address>(entity =>
@@ -2853,46 +2826,6 @@ namespace Employees.Entities.Context
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasComment("Failure description.");
-            });
-
-            modelBuilder.Entity<SearchEmployee>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToView("SearchEmployee", "HumanResources");
-
-                entity.Property(e => e.BirthDate).HasColumnType("date");
-
-                entity.Property(e => e.BusinessEntityId).HasColumnName("BusinessEntityID");
-
-                entity.Property(e => e.EmailAddress).HasMaxLength(50);
-
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.HireDate).HasColumnType("date");
-
-                entity.Property(e => e.JobTitle)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.NationalIdnumber)
-                    .IsRequired()
-                    .HasMaxLength(15)
-                    .HasColumnName("NationalIDNumber");
-
-                entity.Property(e => e.PhoneNumber)
-                    .IsRequired()
-                    .HasMaxLength(25);
             });
 
             modelBuilder.Entity<Shift>(entity =>

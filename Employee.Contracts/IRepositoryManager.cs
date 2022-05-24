@@ -13,7 +13,7 @@ namespace Employees.Contracts
       
         IAddEditEmployeeRepository AddEditEmployeeRepository { get; }
         IAddEditEmployeeRepository2 AddEditEmployeeRepository2 { get; }
-
+        IDepartmentsRepository DepartmentsRepository { get; }
 
 
         IEmployeeDashboardRepository EmployeeDashboard { get; }
