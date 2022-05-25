@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Employees.Entities.Models;
 
-namespace Employees.Contracts.Interface
+namespace Employees.Contracts.Interface.IEmployeeDashboard
 {
     public interface IEmployeeDashboard1Repository
     {

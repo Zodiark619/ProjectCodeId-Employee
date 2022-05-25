@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Employees.Entities.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace Employees.Contracts.Interface
+namespace Employees.Contracts.Interface.IEmployeeDashboard
 {
     public interface IEmployeeDashboardRepository
     {
@@ -16,7 +16,7 @@ namespace Employees.Contracts.Interface
         void DeleteEmployeeAsync(EmployeePayHistory employee);
         void UpdateEmployeeAsync(EmployeePayHistory employee);
         //  Task<HashSet> GetPaginationCustomerAsync(EmployeesParameters employeesParameters, bool trackChanges, string choice, string order);
-        Task<Dictionary<string, int>> ShowEmployeeDashboard1( bool trackChanges);
-        
+        Task<Dictionary<string, int>> ShowEmployeeDashboard1(bool trackChanges);
+
     }
 }

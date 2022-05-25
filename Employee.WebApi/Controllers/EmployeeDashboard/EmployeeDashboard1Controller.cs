@@ -43,7 +43,7 @@ namespace Employees.WebApi.Controllers.EmployeeDashboard
 
         // return Ok(JsonConvert.SerializeObject(json));
         [HttpGet("dashboard1")]
-        public async Task<string> EmployeeDashboard2Department()
+        public async Task<string> EmployeeDashboard2Rate()
         {
             var employeeSearch = await _repository.EmployeeDashboard1.ShowEmployeeDashboard1(trackChanges: false);
 

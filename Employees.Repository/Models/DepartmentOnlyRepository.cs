@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Employees.Contracts.Interface;
+using Employees.Contracts.Interface.IDepartmentOnly;
 using Employees.Entities.Context;
 using Employees.Entities.Models;
 using Microsoft.EntityFrameworkCore;

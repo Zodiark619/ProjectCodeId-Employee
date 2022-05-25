@@ -11,7 +11,7 @@ namespace Employees.WebApi.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<Employee, EmployeesDto>().ReverseMap();
+           // CreateMap<Employee, EmployeesDto>().ReverseMap();
 
             CreateMap<SearchEmployee, SearchEmployeesDto>().ReverseMap();
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Employees.Entities.Models;
 using Employees.Entities.RequestFeatures;
 
-namespace Employees.Contracts.Interface
+namespace Employees.Contracts.Interface.ISearchEmployee
 {
     public interface ISearchEmployeeRepository
     {
