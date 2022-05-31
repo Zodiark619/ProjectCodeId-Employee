@@ -34,7 +34,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEmployee(int id, [FromBody] EditAEDTO dto)
         {
-            var dateAndTime = DateTime.Now;
+            /*var dateAndTime = DateTime.Now;
             var date = dateAndTime.Date;
             if (dto == null)
             {
@@ -73,8 +73,12 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
 
             await _repository.SaveAsync();
 
-            var departmentId = await _repository.DepartmentRepository.GetDepartmentid(dto.Department, true);
+            *//*var departmentId = await _repository.DepartmentRepository.GetDepartmentid(dto.Department, true);
             var shiftId =await _repository.ShiftRepository.GetShiftid(dto.Shift, true);
+*//*
+            var departmentId = await _repository.DepartmentRepository.GetDepartmentid(dto.Department, true);
+            var shiftId = await _repository.ShiftRepository.GetShiftid(dto.Shift, true);
+
 
             var departmentOlder=await _repository.EmployeeDepartmentHistoryRepository.GetEmployeeAsync(id, true);
             departmentOlder.EndDate = DateTime.Now;
@@ -86,6 +90,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
 
 
                 BusinessEntityId = dto.BusinessEntityId,
+                //BusinessEntityId =id,
 
                 DepartmentId =  departmentId,
                 ShiftId =  shiftId,
@@ -113,13 +118,15 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
             var employeePayHistory = new EmployeePayHistory
             {
 
-                BusinessEntityId = dto.BusinessEntityId,
+                 BusinessEntityId = dto.BusinessEntityId,
+                //BusinessEntityId = id,
 
                 RateChangeDate = rateChange,
                 Rate = dto.Rate,
                 PayFrequency = Convert.ToByte(dto.PayFrequency),
                 ModifiedDate = DateTime.Now
             };
+
             _repository.EmployeePayHistoryRepository.CreateEmployeeAsync(employeePayHistory);
 
 
@@ -127,7 +134,114 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
 
             //_repository.Customer.UpdateCustomer(customerEntity);
             await _repository.SaveAsync();
-            return Ok("Updated successfully");
+            return Ok("Update successfully!");*/
+            // return GetEmployeeOnly(dto.BusinessEntityId);
+            var dateAndTime = DateTime.Now;
+            var date = dateAndTime.Date;
+            if (dto == null)
+            {
+                // _logger.LogError("Customer must not be null");
+                return BadRequest("Employee must not be null");
+            }
+
+
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Invalid model state for customerdto object");
+                return UnprocessableEntity(ModelState);
+            }
+            var customerEntity = await _repository.AddEmployee.GetEmployeeAsync(id, trackChanges: true);
+
+            if (customerEntity == null)
+            {
+                // _logger.LogError($"Company with id : {id} not found");
+                return NotFound();
+            }
+
+
+            // BusinessEntity=dto.BusinessEntityId,
+            customerEntity.NationalIdnumber = dto.NationalIdnumber;
+            customerEntity.BirthDate = dto.BirthDate;
+            customerEntity.MaritalStatus = dto.MaritalStatus;
+            customerEntity.Gender = dto.Gender;
+            customerEntity.HireDate = dto.HireDate;
+            customerEntity.VacationHours = dto.VacationHours;
+            customerEntity.SickLeaveHours = dto.SickLeaveHours;
+            customerEntity.JobTitle = dto.JobTitle;
+            customerEntity.ModifiedDate = DateTime.Now;
+
+            _repository.AddEmployee.UpdateEmployeeAsync(customerEntity);
+
+            await _repository.SaveAsync();
+
+            /*var departmentId = await _repository.DepartmentRepository.GetDepartmentid(dto.Department, true);
+            var shiftId =await _repository.ShiftRepository.GetShiftid(dto.Shift, true);
+*/
+            var departmentId = await _repository.DepartmentRepository.GetDepartmentid(dto.Department, true);
+            var shiftId = await _repository.ShiftRepository.GetShiftid(dto.Shift, true);
+
+
+            var departmentOlder = await _repository.EmployeeDepartmentHistoryRepository.GetEmployeeAsync(id, true);
+            if(departmentOlder.DepartmentId != departmentId || departmentOlder.ShiftId!= shiftId)
+            {
+                departmentOlder.EndDate = DateTime.Now;
+                _repository.EmployeeDepartmentHistoryRepository.UpdateEmployeeAsync(departmentOlder);
+                await _repository.SaveAsync();
+
+                var employeeDepartmentHistory = new EmployeeDepartmentHistory
+                {
+
+
+                    BusinessEntityId = dto.BusinessEntityId,
+                    //BusinessEntityId =id,
+
+                    DepartmentId = departmentId,
+                    ShiftId = shiftId,
+                    StartDate = date,
+                    ModifiedDate = DateTime.Now
+
+                };
+                _repository.EmployeeDepartmentHistoryRepository.CreateEmployeeAsync(employeeDepartmentHistory);
+                await _repository.SaveAsync();
+            }
+            
+
+
+
+
+
+            var payOlder = await _repository.EmployeePayHistoryRepository.GetEmployeeAsync(id, true);
+            var rateChange = payOlder.RateChangeDate;
+            var rate = payOlder.Rate;
+            // _repository.EmployeeDepartmentHistoryRepository.UpdateEmployeeAsync(departmentOlder);
+
+            if (dto.Rate != rate)
+            {
+                rateChange = DateTime.Now;
+
+
+                var employeePayHistory = new EmployeePayHistory
+                {
+
+                    BusinessEntityId = dto.BusinessEntityId,
+                    //BusinessEntityId = id,
+
+                    RateChangeDate = rateChange,
+                    Rate = dto.Rate,
+                    PayFrequency = Convert.ToByte(dto.PayFrequency),
+                    ModifiedDate = DateTime.Now
+                };
+
+                _repository.EmployeePayHistoryRepository.CreateEmployeeAsync(employeePayHistory);
+                await _repository.SaveAsync();
+            }
+
+
+
+            //_repository.Customer.UpdateCustomer(customerEntity);
+            
+            return Ok("Update successfully!");
         }
 
 
@@ -172,14 +286,14 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
                 HireDate = dto.HireDate,
                 VacationHours = dto.VacationHours,
                 SickLeaveHours = dto.SickLeaveHours,
-                JobTitle = dto.JobTitle
-               // ModifiedDate = DateTime.Now,
+                JobTitle = dto.JobTitle,
+                ModifiedDate = DateTime.Now,
             };
              _repository.AddEmployee.CreateEmployeeAsync(employee);
            
             await _repository.SaveAsync();
-            var departmentId = _repository.DepartmentRepository.GetDepartmentid(dto.Department,false);
-            var shiftId = _repository.ShiftRepository.GetShiftid(dto.Shift, false);
+            var departmentId =await _repository.DepartmentRepository.GetDepartmentid(dto.Department,false);
+            var shiftId =await _repository.ShiftRepository.GetShiftid(dto.Shift, false);
             
             
 
@@ -188,10 +302,10 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
 
                 BusinessEntityId = dto.BusinessEntityId,
 
-                DepartmentId = await departmentId,
-                ShiftId=await shiftId,
+                DepartmentId =  departmentId,
+                ShiftId= shiftId,
                 StartDate=date,
-               // ModifiedDate=DateTime.Now  
+                ModifiedDate=DateTime.Now  
 
             };
             _repository.EmployeeDepartmentHistoryRepository.CreateEmployeeAsync(employeeDepartmentHistory);
@@ -204,7 +318,7 @@ namespace Employees.WebApi.Controllers.AddEditEmployeeController
                 RateChangeDate = DateTime.Now,
                 Rate=dto.Rate,
                 PayFrequency=Convert.ToByte(dto.PayFrequency),
-             //   ModifiedDate=DateTime.Now
+                ModifiedDate=DateTime.Now
             };
             _repository.EmployeePayHistoryRepository.CreateEmployeeAsync(employeePayHistory);
 

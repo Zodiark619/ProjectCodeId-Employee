@@ -71,7 +71,7 @@ namespace Employees.WebApi.Controllers.DepartmentOnlyController
             await _repository.SaveAsync();
 
             var result = _mapper.Map<DepartmentDto>(department);
-            return NoContent();
+            return Ok(result);
             // return CreatedAtRoute("DepartmentID", new { id = result.DepartmentId }, result);
         }
 
@@ -86,7 +86,7 @@ namespace Employees.WebApi.Controllers.DepartmentOnlyController
             }
             _repository.DepartmentOnlyRepository.DeleteDepartments(department);
             await _repository.SaveAsync();
-            return NoContent();
+            return Ok("Delete Successfully");
         }
 
         [HttpPut("{id}")]
@@ -109,10 +109,10 @@ namespace Employees.WebApi.Controllers.DepartmentOnlyController
                 return NotFound();
             }
 
-            _mapper.Map(departmentDto, department);
+            var result = _mapper.Map(departmentDto, department);
             _repository.DepartmentOnlyRepository.UpdateDepartments(department);
             await _repository.SaveAsync();
-            return NoContent();
+            return Ok(result);
         }
     }
 }

@@ -63,17 +63,17 @@ namespace Employees.Repository.Models
             var query = await FindAll(trackChanges)
                 .OrderBy(c => c.BusinessEntityId)
                 .ToListAsync();
-            List<string> meong = new List<string>();
+            List<string> list_duplicate = new List<string>();
             foreach(var item in query)
             {
                
-                meong.Add(item.Department);
+                list_duplicate.Add(item.Department);
             }
-            meong.Add("Total");
-            var meong1=meong.Distinct().ToList();
+            list_duplicate.Add("Total");
+            var list_unique=list_duplicate.Distinct().ToList();
             
             Dictionary<string, int> dictRateSalary = new Dictionary<string, int>();
-            foreach (var item in meong1)
+            foreach (var item in list_unique)
             {
              
                 dictRateSalary.Add(item,0);
